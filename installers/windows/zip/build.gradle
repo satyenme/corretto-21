@@ -64,7 +64,7 @@ task buildAndRunGtest(type: Exec) {
 }
 
 task copyImage(type: Copy) {
-    dependsOn task buildAndRunGtest
+    dependsOn buildAndRunGtest
 
     from "${executeBuild.workingDir}/build/${project.jdkImageName}/images"
     into "$buildRoot/build"
