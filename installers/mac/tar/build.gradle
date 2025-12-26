@@ -88,6 +88,12 @@ task executeTestBuild(type: Exec) {
     commandLine 'make','test-image'
 }
 
+task buildAndRunGtest(type: Exec) {
+    dependsOn createTestImage
+    workingDir "$buildRoot"
+    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+}
+
 task prepareArtifacts {
     dependsOn executeBuild
     doLast {
@@ -188,7 +194,7 @@ task packageDebugSymbols(type: Tar) {
 }
 
 task packageTestResults(type: Tar) {
-    dependsOn executeTestBuild
+    dependsOn buildAndRunGtest
     description 'Package test results'
     archiveName "${project.correttoTestImageArchiveName}.tar.gz"
     compression Compression.GZIP

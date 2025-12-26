@@ -98,6 +98,12 @@ task createTestImage(type: Exec) {
     commandLine 'make','test-image'
 }
 
+task buildAndRunGtest(type: Exec) {
+    dependsOn createTestImage
+    workingDir "$buildRoot"
+    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+}
+
 task bundleThirdPartyBinaries {
     dependsOn executeBuild
     doLast {
@@ -120,7 +126,7 @@ task bundleThirdPartyBinaries {
 }
 
 task packageTestImage(type: Tar) {
-    dependsOn createTestImage
+    dependsOn buildAndRunGtest
     description 'Package test results'
     archiveName "${project.correttoTestImageArchiveName}.tar.gz"
     compression Compression.GZIP

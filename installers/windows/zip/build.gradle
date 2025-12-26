@@ -57,8 +57,14 @@ task executeBuild(type: Exec) {
     commandLine 'make', 'images', 'test-image'
 }
 
-task copyImage(type: Copy) {
+task buildAndRunGtest(type: Exec) {
     dependsOn executeBuild
+    workingDir "$buildRoot"
+    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+}
+
+task copyImage(type: Copy) {
+    dependsOn task buildAndRunGtest
 
     from "${executeBuild.workingDir}/build/${project.jdkImageName}/images"
     into "$buildRoot/build"
