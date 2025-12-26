@@ -89,7 +89,7 @@ task executeTestBuild(type: Exec) {
 }
 
 task buildAndRunGtest(type: Exec) {
-    dependsOn createTestImage
+    dependsOn executeTestBuild
     workingDir "$buildRoot"
     commandLine 'make', 'run-test', 'TEST="gtest:all"'
 }
