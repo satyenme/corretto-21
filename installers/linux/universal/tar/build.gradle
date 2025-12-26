@@ -98,10 +98,14 @@ task createTestImage(type: Exec) {
     commandLine 'make','test-image'
 }
 
-task buildAndRunGtest(type: Exec) {
-    dependsOn createTestImage
+task runGtest(type: Exec) {
+    dependsOn executeBuild
     workingDir "$buildRoot"
     commandLine 'make', 'run-test', 'TEST="gtest:all"'
+    
+    onlyIf {
+        project.gtest != ""
+    }
 }
 
 task bundleThirdPartyBinaries {
@@ -126,7 +130,7 @@ task bundleThirdPartyBinaries {
 }
 
 task packageTestImage(type: Tar) {
-    dependsOn buildAndRunGtest
+    dependsOn createTestImage
     description 'Package test results'
     archiveName "${project.correttoTestImageArchiveName}.tar.gz"
     compression Compression.GZIP
@@ -153,6 +157,7 @@ task packageBuildResults(type: Tar) {
     description 'Compresses the JDK image and puts the results in build/distributions.'
     dependsOn packageDebugSymbols
     dependsOn bundleThirdPartyBinaries
+    dependsOn runGtest
     archiveName "${project.correttoJdkArchiveName}.tar.gz"
     compression Compression.GZIP
     from(buildRoot) {
