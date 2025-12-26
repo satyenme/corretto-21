@@ -88,13 +88,15 @@ task executeTestBuild(type: Exec) {
     commandLine 'make','test-image'
 }
 
-task runGtest(type: Exec) {
+task runGtest {
     dependsOn executeBuild
-    workingDir "$buildRoot"
-    commandLine 'make', 'run-test', 'TEST="gtest:all"'
-
-    onlyIf {
-        project.gtest != ""
+    doLast {
+        if (project.gtest != "") {
+            exec {
+                workingDir "$buildRoot"
+                commandLine 'make', 'run-test', 'TEST="gtest:all"'
+            }
+        }
     }
 }
 
