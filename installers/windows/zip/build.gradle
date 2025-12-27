@@ -71,7 +71,6 @@ task runGtest {
 
 task copyImage(type: Copy) {
     dependsOn executeBuild
-    dependsOn runGtest
 
     from "${executeBuild.workingDir}/build/${project.jdkImageName}/images"
     into "$buildRoot/build"
@@ -100,6 +99,7 @@ task packageDebugSymbols(type: Zip) {
 
 task packageBuildResults(type: Zip) {
     dependsOn packageDebugSymbols
+    dependsOn runGtest
     archiveName  = "unsigned-jdk-image.zip"
 
     from("${copyImage.destinationDir}/jdk") {
