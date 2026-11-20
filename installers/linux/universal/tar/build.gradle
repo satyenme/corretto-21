@@ -122,7 +122,7 @@ task bundleThirdPartyBinaries {
 task packageTestImage(type: Tar) {
     dependsOn createTestImage
     description 'Package test results'
-    archiveName "${project.correttoTestImageArchiveName}.tar.gz"
+    archiveFileName = "${project.correttoTestImageArchiveName}.tar.gz"
     compression Compression.GZIP
     from(testResultingImage) {
         include '**'
@@ -133,7 +133,7 @@ task packageTestImage(type: Tar) {
 task packageDebugSymbols(type: Tar) {
     description 'Package debug results'
     dependsOn packageTestImage
-    archiveName "${project.correttoDebugSymbolsArchiveName}.tar.gz"
+    archiveFileName = "${project.correttoDebugSymbolsArchiveName}.tar.gz"
     compression Compression.GZIP
     from(jdkResultingImage) {
         include 'bin/*.diz'

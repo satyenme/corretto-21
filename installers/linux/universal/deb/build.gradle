@@ -20,7 +20,7 @@
  */
 
 plugins {
-    id 'nebula.ospackage' version '9.+'
+    id 'com.netflix.nebula.ospackage' version '14.+'
 }
 
 dependencies {
